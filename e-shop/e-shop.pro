@@ -14,10 +14,16 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    registration.cpp
+    registration.cpp \
+    manager.cpp \
+    product_add.cpp
 
 HEADERS  += mainwindow.h \
-    registration.h
+    registration.h \
+    manager.h \
+    product_add.h
 
 FORMS    += mainwindow.ui \
-    registration.ui
+    registration.ui \
+    manager.ui \
+    product_add.ui

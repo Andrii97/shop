@@ -7,14 +7,6 @@ registration::registration(QWidget *parent) :
     ui(new Ui::registration)
 {
     ui->setupUi(this);
-    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
-    QString path = QDir::currentPath()+QString("/shop.db");
-    db.setDatabaseName(path);
-    if(!db.open())
-            QMessageBox::warning(this,"Error!","Unable to connect to database");
-    else
-        qDebug()<<"database OK";
-    qDebug()<<QDir::currentPath();
 }
 
 registration::~registration()
