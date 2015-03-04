@@ -4,6 +4,7 @@
 #include <QMessageBox>
 #include "registration.h"
 #include "product_add.h"
+#include "set_properties.h"
 
 int main(int argc, char *argv[])
 {
@@ -22,5 +23,7 @@ int main(int argc, char *argv[])
     m.show();
     product_add p;
     p.show();
+    set_properties s;
+    s.show();
     return a.exec();
 }

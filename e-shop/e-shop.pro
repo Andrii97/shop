@@ -16,14 +16,17 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     registration.cpp \
     manager.cpp \
-    product_add.cpp
+    product_add.cpp \
+    set_properties.cpp
 
 HEADERS  += mainwindow.h \
     registration.h \
     manager.h \
-    product_add.h
+    product_add.h \
+    set_properties.h
 
 FORMS    += mainwindow.ui \
     registration.ui \
     manager.ui \
-    product_add.ui
+    product_add.ui \
+    set_properties.ui

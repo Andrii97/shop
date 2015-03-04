@@ -17,6 +17,12 @@ registration::~registration()
 
 void registration::on_Enter_clicked()
 {
+    if (NULL == ui->TSurname->text() || NULL == ui->TName->text() || NULL == ui->TLogin->text()
+            || NULL == ui->TPassword->text())
+    {
+        QMessageBox::critical(this,"Information","Not all fields are filled");
+        return;
+    }
     QSqlQuery qr;
     qr.exec("SELECT Login FROM buyers;");
     QString login;

@@ -1,7 +1,5 @@
 #include "product_add.h"
 #include "ui_product_add.h"
-#include <QtSql>
-#include <QMessageBox>
 
 product_add::product_add(QWidget *parent) :
     QWidget(parent),
@@ -22,7 +20,22 @@ void product_add::on_pushButton_clicked()
         qDebug() << "error";
         return;
     }
+
     QSqlQuery query;
+    query.exec("SELECT Name FROM products;");
+    QString Name;
+    while (query.next())
+    {
+        Name = query.value(0).toString();
+        if (Name == ui->TName->text())
+        {
+             QMessageBox::warning(this,"Error","This Name already exists");
+             return;
+        }
+        qDebug() << Name;
+    }
+
+    //QSqlQuery query;
     query.prepare("INSERT INTO products (Name, Photo) "
                   "VALUES (?, ?)");
     query.addBindValue(ui->TName->text());

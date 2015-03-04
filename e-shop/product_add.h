@@ -2,6 +2,8 @@
 #define PRODUCT_ADD_H
 
 #include <QWidget>
+#include <QtSql>
+#include <QMessageBox>
 
 namespace Ui {
 class product_add;
