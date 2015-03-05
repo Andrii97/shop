@@ -18,7 +18,7 @@ registration::~registration()
 void registration::on_Enter_clicked()
 {
     if (NULL == ui->TSurname->text() || NULL == ui->TName->text() || NULL == ui->TLogin->text()
-            || NULL == ui->TPassword->text())
+            || NULL == ui->TPassword->text() || NULL == ui->TPatronymic->text())
     {
         QMessageBox::critical(this,"Information","Not all fields are filled");
         return;
@@ -41,14 +41,16 @@ void registration::on_Enter_clicked()
     if (flag == 0)
     {
         QSqlQuery query;
-        query.prepare("INSERT INTO buyers (Surname, Name, Login, Password, The_cost_of_all_purchases) "
-                      "VALUES (?, ?, ?, ?, ?)");
+        query.prepare("INSERT INTO buyers (Surname, Name, Patronymic, Login, Password, The_cost_of_all_purchases) "
+                      "VALUES (?, ?, ?, ?, ?, ?)");
         query.addBindValue(ui->TSurname->text());
         query.addBindValue(ui->TName->text());
+        query.addBindValue(ui->TPatronymic->text());
         query.addBindValue(ui->TLogin->text());
         query.addBindValue(ui->TPassword->text());
         query.addBindValue(0);
         if (query.exec())
             QMessageBox::information(this,"Information","Registration was successful");
+        close();
     }
 }
