@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "registration.h"
+#include "manager.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -38,6 +39,9 @@ void MainWindow::on_Enter_clicked()
         {
              QMessageBox::information(this,"ОК","Авторизація пройшла успішно");
              flag = 1;
+             manager *m = new manager;
+             m->show();
+             close();
         }
         qDebug() << login;
         qDebug() << "-------->" << password;

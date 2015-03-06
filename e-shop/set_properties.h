@@ -17,6 +17,13 @@ public:
     explicit set_properties(QWidget *parent = 0);
     ~set_properties();
 
+private slots:
+
+
+    void on_CProperties_currentIndexChanged(int index);
+
+    void on_Enter_clicked();
+
 private:
     Ui::set_properties *ui;
 };
