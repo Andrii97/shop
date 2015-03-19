@@ -47,7 +47,7 @@ void registration::on_Enter_clicked()
         query.addBindValue(ui->TName->text());
         query.addBindValue(ui->TPatronymic->text());
         query.addBindValue(ui->TLogin->text());
-        query.addBindValue(ui->TPassword->text());
+        query.addBindValue(QString(QCryptographicHash::hash((ui->TPassword->text().toLocal8Bit()),QCryptographicHash::Md5).toHex()));
         query.addBindValue(0);
         if (query.exec())
             QMessageBox::information(this,"Information","Registration was successful");

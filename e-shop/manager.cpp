@@ -77,6 +77,8 @@ void manager::on_Enter_clicked()
         qr.addBindValue(value);
         if (qr.exec())
             QMessageBox::information(this,"Information","Set properties was successful");
+        ui->CProperties->addItem(ui->TProperties->text());
+        ui->TProperties->setText("");
     }
     ui->TValue->setText(NULL);
 }
@@ -122,4 +124,6 @@ void manager::on_pushButton_clicked()
     query.addBindValue(ui->TPhoto->text());
     if (query.exec())
         QMessageBox::information(this,"Information","Add product was successful");
+    ui->CName->addItem(ui->TName->text());
+    ui->TName->setText("");
 }

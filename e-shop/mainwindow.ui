@@ -156,7 +156,11 @@
       <enum>Qt::Vertical</enum>
      </property>
      <widget class="QLineEdit" name="TLogin"/>
-     <widget class="QLineEdit" name="TPassword"/>
+     <widget class="QLineEdit" name="TPassword">
+      <property name="echoMode">
+       <enum>QLineEdit::Password</enum>
+      </property>
+     </widget>
     </widget>
    </widget>
   </widget>

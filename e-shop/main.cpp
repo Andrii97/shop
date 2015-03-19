@@ -2,10 +2,7 @@
 #include <QApplication>
 #include <QtSql>
 #include <QMessageBox>
-#include "registration.h"
-#include "product_add.h"
-#include "set_properties.h"
-#include "manager.h"
+
 
 int main(int argc, char *argv[])
 {

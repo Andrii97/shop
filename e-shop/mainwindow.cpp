@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include "registration.h"
 #include "manager.h"
+#include "buyers.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -35,12 +36,21 @@ void MainWindow::on_Enter_clicked()
     {
         login = qr.value(0).toString();
         password = qr.value(1).toString();
-        if (login == ui->TLogin->text() && password == ui->TPassword->text())
+        if (login == ui->TLogin->text() &&
+                password == QString(QCryptographicHash::hash((ui->TPassword->text().toLocal8Bit()),QCryptographicHash::Md5).toHex()))
         {
              QMessageBox::information(this,"ОК","Авторизація пройшла успішно");
              flag = 1;
-             manager *m = new manager;
-             m->show();
+             if (1 == ui->comboBox->currentIndex())
+             {
+                manager *m = new manager;
+                m->show();
+             }
+             else
+             {
+                 buyers *s = new buyers;
+                 s->show();
+             }
              close();
         }
         qDebug() << login;
