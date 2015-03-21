@@ -1,5 +1,6 @@
 #include "manager.h"
 #include "ui_manager.h"
+#include <QTableWidgetItem>
 
 manager::manager(QWidget *parent) :
     QWidget(parent),
@@ -11,6 +12,7 @@ manager::manager(QWidget *parent) :
     qr.next();
     ui->LName->setText(qr.value(0).toString() + " - " + qr.value(1).toString() + " " +
                        qr.value(2).toString() + " " + qr.value(3).toString());
+    // add properties
     qr.exec("SELECT Name FROM products;");
     QString Name;
     ui->CProperties->addItem("Додати характеристику");
@@ -28,6 +30,45 @@ manager::manager(QWidget *parent) :
         properties = qr.value(0).toString();
         ui->CProperties->addItem(properties);
         qDebug() << properties;
+    }
+
+    // look information about manager
+    qr.exec("SELECT Surname, Name, Patronymic, Login, Job_title FROM administrators;");
+    while(qr.next())
+    {
+        for(int pos = 0; pos < 5; pos++)
+        {
+            QTableWidgetItem *item = new QTableWidgetItem();
+            item->setText(qr.value(pos).toString());
+            ui->tableWidget->setItem(pos, 0, item);
+            ui->tableWidget->item(pos, 0)->setFlags(Qt::ItemFlags(32));
+        }
+    }
+    // set table of products
+    ui->tableProducts->setColumnCount(3);
+    ui->tableProducts->setHorizontalHeaderLabels(QStringList() << "ID" << "Назва" << "Кількість");
+    qr.exec("SELECT * FROM composition;");
+    //ui->tableProducts->setDisabled(true);
+    while(qr.next())
+    {
+        QSqlQuery qr1;
+        qr1.exec("SELECT Name FROM products WHERE ID='"+qr.value(0).toString()+"';");
+        qr1.next();
+        ui->tableProducts->setRowCount(ui->tableProducts->rowCount()+1);
+        //ui->tableProducts->(qr.value(0), qr1.value(0), qr.value(1));
+        qDebug() << "-------->" << qr.value(0).toString() << qr1.value(0).toString() << qr.value(1).toString();
+        QTableWidgetItem *item = new QTableWidgetItem();
+        item->setText(qr.value(0).toString());
+        ui->tableProducts->setItem(ui->tableProducts->rowCount()-1, 0, item);
+        QTableWidgetItem *item1 = new QTableWidgetItem();
+        item1->setText(qr1.value(0).toString());
+        ui->tableProducts->setItem(ui->tableProducts->rowCount()-1, 1, item1);
+        QTableWidgetItem *item2 = new QTableWidgetItem();
+        item2->setText(qr.value(1).toString());
+        ui->tableProducts->setItem(ui->tableProducts->rowCount()-1, 2, item2);
+        ui->tableProducts->item(ui->tableProducts->rowCount()-1,0)->setFlags(Qt::ItemFlags(32));
+        ui->tableProducts->item(ui->tableProducts->rowCount()-1,1)->setFlags(Qt::ItemFlags(32));
+        ui->tableProducts->item(ui->tableProducts->rowCount()-1,2)->setFlags(Qt::ItemFlags(32));
     }
 }
 
