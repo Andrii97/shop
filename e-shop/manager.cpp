@@ -200,25 +200,45 @@ void manager::on_CCurrency_currentIndexChanged(int index)
 void manager::on_addProductToWarehouse_clicked()
 {
     QSqlQuery qr;
+
+    // composition
     qr.prepare("INSERT INTO composition (ID_product, number) VALUES (?, ?);");
     qr.addBindValue(ui->CProduct->currentIndex() + 1); // it will be error if I delete anyone product
     qr.addBindValue(ui->spinBoxNumber->value());
     qDebug() << ui->CProduct->currentIndex() + 1 << ui->spinBoxNumber->value();
     if (!qr.exec())
-        QMessageBox::information(this,"Information","Set properties wasn't successful");
-    qr.prepare("INSERT INTO ProductCurrency (ID_product, ID_currency, Price) VALUES (?, ?, ?)");
+    {
+        QMessageBox::information(this,"Information","Set product wasn't successful");
+        QSqlQuery q;
+        q.prepare("SELECT number FROM composition WHERE ID_product = (?);");
+        q.addBindValue(ui->CProduct->currentIndex()+1);
+        q.exec();
+        q.next();
+        qr.prepare("UPDATE composition SET number = (?) WHERE ID_product = (?);");
+        qr.addBindValue(ui->spinBoxNumber->value() + q.value(0).toInt());
+        qr.addBindValue(ui->CProduct->currentIndex()+1);
+        if(qr.exec())
+            QMessageBox::information(this,"Information","Update product was successful");
+    }
+
+    // ProductCurrency
+    qr.prepare("INSERT INTO ProductCurrency (ID_product, ID_currency, Price VALUES (?, ?, ?);");
     qr.addBindValue(ui->CProduct->currentIndex() + 1); // it will be error if I delete anyone product
     qr.addBindValue(ui->CCurrency->currentIndex() + 1); // it will be error if I delete anyone product
     qr.addBindValue(ui->dSpinBoxPrice->value());
     qDebug() << ui->CProduct->currentIndex() + 1 << ui->CCurrency->currentIndex() + 1 << ui->dSpinBoxPrice->value();
     if (!qr.exec())
-        QMessageBox::information(this,"Information","Set properties wasn't successful");
+    {
+        QMessageBox::information(this,"Information","Set product wasn't successful");
+    }
+
+    // product_price
     qr.prepare("INSERT INTO product_price (ID, Purchase_price, Сoefficient) VALUES (?, ?, ?)");
     qr.addBindValue(ui->CProduct->currentIndex() + 1); // it will be error if I delete anyone product
     qr.addBindValue(ui->dSpinBoxPrice->value() * ui->LRateValue->text().toDouble()); // it will be error if I delete anyone product
     qr.addBindValue(2);
     qDebug() << ui->CProduct->currentIndex() + 1 << ui->dSpinBoxPrice->value() * ui->LRateValue->text().toDouble();
     if (!qr.exec())
-        QMessageBox::information(this,"Information","Set properties wasn't successful");
-    else QMessageBox::information(this,"Information","Set properties was successful");
+        QMessageBox::information(this,"Information","Set product wasn't successful");
+    else QMessageBox::information(this,"Information","Set product was successful");
 }
