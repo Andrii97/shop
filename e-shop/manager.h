@@ -16,6 +16,7 @@ class manager : public QWidget
 public:
     explicit manager(QWidget *parent = 0);
     ~manager();
+    void initExchangeRates();
 
 private slots:
     void on_Enter_clicked();
@@ -23,6 +24,10 @@ private slots:
     void on_CProperties_currentIndexChanged(int index);
 
     void on_pushButton_clicked();
+
+    void on_CCurrency_currentIndexChanged(int index);
+
+    void on_addProductToWarehouse_clicked();
 
 private:
     Ui::manager *ui;

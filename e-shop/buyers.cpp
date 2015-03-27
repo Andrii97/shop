@@ -3,6 +3,7 @@
 #include <time.h>
 #include <QTime>
 #include <QDate>
+#include <QTreeWidgetItem>
 
 buyers::buyers(QWidget *parent) :
     QWidget(parent),
@@ -13,6 +14,12 @@ buyers::buyers(QWidget *parent) :
     QDate d;
     ui->dateTimeEdit->setTime(rawtime.currentTime());
     ui->dateTimeEdit->setDate(d.currentDate());
+    //ui->treeWidget->setColumnCount(2);
+    QTreeWidgetItem *q;
+    QString l;
+    l="composition";
+   // q->setText(0, l);
+   // ui->treeWidget->setCurrentItem(q);
 }
 
 buyers::~buyers()
