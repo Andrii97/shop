@@ -311,16 +311,25 @@
         </property>
        </widget>
        <widget class="QDoubleSpinBox" name="dSpinBoxPrice">
+        <property name="styleSheet">
+         <string notr="true">font: 10pt &quot;MS Shell Dlg 2&quot;;</string>
+        </property>
         <property name="maximum">
          <double>9999.989999999999782</double>
         </property>
        </widget>
        <widget class="QLabel" name="LRateValue">
+        <property name="styleSheet">
+         <string notr="true">font: 10pt &quot;MS Shell Dlg 2&quot;;</string>
+        </property>
         <property name="text">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;TextLabel&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
        </widget>
        <widget class="QSpinBox" name="spinBoxNumber">
+        <property name="styleSheet">
+         <string notr="true">font: 10pt &quot;MS Shell Dlg 2&quot;;</string>
+        </property>
         <property name="maximum">
          <number>9999</number>
         </property>
@@ -369,15 +378,53 @@
       <attribute name="title">
        <string>Змінити курс валют</string>
       </attribute>
-      <widget class="QTableWidget" name="tableWidget_2">
+      <widget class="QTableWidget" name="tableCurrency">
        <property name="geometry">
         <rect>
          <x>10</x>
          <y>10</y>
          <width>471</width>
-         <height>181</height>
+         <height>191</height>
         </rect>
        </property>
+       <property name="styleSheet">
+        <string notr="true">font: 11pt &quot;MS Shell Dlg 2&quot;;</string>
+       </property>
+      </widget>
+      <widget class="QSplitter" name="splitter_12">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>210</y>
+         <width>471</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <widget class="QSplitter" name="splitter_10">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <widget class="QComboBox" name="CChangeCurrency"/>
+        <widget class="QDoubleSpinBox" name="dSpinBoxChangeCurrency">
+         <property name="styleSheet">
+          <string notr="true">font: 10pt &quot;MS Shell Dlg 2&quot;;</string>
+         </property>
+         <property name="maximum">
+          <double>9999.989999999999782</double>
+         </property>
+        </widget>
+       </widget>
+       <widget class="QPushButton" name="SetCurrency">
+        <property name="styleSheet">
+         <string notr="true">font: 10pt &quot;MS Shell Dlg 2&quot;;</string>
+        </property>
+        <property name="text">
+         <string>Встановити новий курс</string>
+        </property>
+       </widget>
       </widget>
      </widget>
      <widget class="QWidget" name="tab_3">
@@ -424,7 +471,21 @@
       </attribute>
       <layout class="QGridLayout" name="gridLayout">
        <item row="0" column="0">
-        <widget class="QTableWidget" name="tableProducts"/>
+        <widget class="QTableWidget" name="tableProducts">
+         <property name="styleSheet">
+          <string notr="true">font: 11pt &quot;MS Shell Dlg 2&quot;;</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QPushButton" name="RefreshProductInWarehouse">
+         <property name="styleSheet">
+          <string notr="true">font: 10pt &quot;MS Shell Dlg 2&quot;;</string>
+         </property>
+         <property name="text">
+          <string>Оновити</string>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>

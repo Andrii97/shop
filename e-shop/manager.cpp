@@ -1,6 +1,7 @@
 #include "manager.h"
 #include "ui_manager.h"
 #include <QTableWidgetItem>
+#include <QModelIndex>
 
 manager::manager(QWidget *parent) :
     QWidget(parent),
@@ -48,35 +49,40 @@ manager::manager(QWidget *parent) :
     // set table of products
     ui->tableProducts->setColumnCount(3);
     ui->tableProducts->setHorizontalHeaderLabels(QStringList() << "ID" << "Назва" << "Кількість");
-    qr.exec("SELECT * FROM composition;");
-    //ui->tableProducts->setDisabled(true);
-    while(qr.next())
-    {
-        QSqlQuery qr1;
-        qr1.exec("SELECT Name FROM products WHERE ID='"+qr.value(0).toString()+"';");
-        qr1.next();
-        ui->tableProducts->setRowCount(ui->tableProducts->rowCount()+1);
-        //ui->tableProducts->(qr.value(0), qr1.value(0), qr.value(1));
-        qDebug() << "-------->" << qr.value(0).toString() << qr1.value(0).toString() << qr.value(1).toString();
-        QTableWidgetItem *item = new QTableWidgetItem();
-        item->setText(qr.value(0).toString());
-        ui->tableProducts->setItem(ui->tableProducts->rowCount()-1, 0, item);
-        QTableWidgetItem *item1 = new QTableWidgetItem();
-        item1->setText(qr1.value(0).toString());
-        ui->tableProducts->setItem(ui->tableProducts->rowCount()-1, 1, item1);
-        QTableWidgetItem *item2 = new QTableWidgetItem();
-        item2->setText(qr.value(1).toString());
-        ui->tableProducts->setItem(ui->tableProducts->rowCount()-1, 2, item2);
-        ui->tableProducts->item(ui->tableProducts->rowCount()-1,0)->setFlags(Qt::ItemFlags(32));
-        ui->tableProducts->item(ui->tableProducts->rowCount()-1,1)->setFlags(Qt::ItemFlags(32));
-        ui->tableProducts->item(ui->tableProducts->rowCount()-1,2)->setFlags(Qt::ItemFlags(32));
-    }
+    fillTableProducts();
+
+    ui->tableCurrency->setColumnCount(4);
+    ui->tableCurrency->setHorizontalHeaderLabels(QStringList() << "Цифровий код" << "Буквений код" << "Валюта" << "Еквівалент");
+    fillTableCurrency();
     initExchangeRates();
 }
 
 manager::~manager()
 {
     delete ui;
+}
+
+void manager::selectTable()
+{
+   // ui->tableProducts->setColumnCount(3);
+   // ui->tableProducts->setHorizontalHeaderLabels(QStringList() << "ID" << "Назва" << "Кількість");
+    ui->tableProducts->clear();
+    QSqlQuery qr;
+    qr.exec("SELECT Surname, Name, Patronymic, Login, Job_title FROM administrators;");
+    while(qr.next())
+    {
+        for(int pos = 0; pos < 5; pos++)
+        {
+            QTableWidgetItem *item = new QTableWidgetItem();
+            item->setText(qr.value(pos).toString());
+            ui->tableWidget->setItem(pos, 0, item);
+            ui->tableWidget->item(pos, 0)->setFlags(Qt::ItemFlags(32));
+        }
+    }
+    // set table of products
+    //ui->tableProducts->setColumnCount(3);
+    //ui->tableProducts->setHorizontalHeaderLabels(QStringList() << "ID" << "Назва" << "Кількість");
+    fillTableProducts();
 }
 
 void manager::on_Enter_clicked()
@@ -199,6 +205,7 @@ void manager::on_CCurrency_currentIndexChanged(int index)
 // Maybe it is error that I took currentIndex
 void manager::on_addProductToWarehouse_clicked()
 {
+    if (ui->spinBoxNumber->value() == 0) return;
     QSqlQuery qr;
 
     // composition
@@ -241,4 +248,141 @@ void manager::on_addProductToWarehouse_clicked()
     if (!qr.exec())
         QMessageBox::information(this,"Information","Set product wasn't successful");
     else QMessageBox::information(this,"Information","Set product was successful");
+}
+
+void manager::fillTableProducts()
+{
+    ui->tableProducts->setRowCount(0);
+    QSqlQuery qr;
+    qr.exec("SELECT * FROM composition;");
+    while(qr.next())
+    {
+        QSqlQuery qr1;
+        qr1.exec("SELECT Name FROM products WHERE ID='"+qr.value(0).toString()+"';");
+        qr1.next();
+        ui->tableProducts->setRowCount(ui->tableProducts->rowCount()+1);
+        qDebug() << "-------->" << qr.value(0).toString() << qr1.value(0).toString() << qr.value(1).toString();
+        QTableWidgetItem *item = new QTableWidgetItem();
+        item->setText(qr.value(0).toString());
+        ui->tableProducts->setItem(ui->tableProducts->rowCount()-1, 0, item);
+        QTableWidgetItem *item1 = new QTableWidgetItem();
+        item1->setText(qr1.value(0).toString());
+        ui->tableProducts->setItem(ui->tableProducts->rowCount()-1, 1, item1);
+        QTableWidgetItem *item2 = new QTableWidgetItem();
+        item2->setText(qr.value(1).toString());
+        ui->tableProducts->setItem(ui->tableProducts->rowCount()-1, 2, item2);
+        ui->tableProducts->item(ui->tableProducts->rowCount()-1,0)->setFlags(Qt::ItemFlags(32));
+        ui->tableProducts->item(ui->tableProducts->rowCount()-1,1)->setFlags(Qt::ItemFlags(32));
+        ui->tableProducts->item(ui->tableProducts->rowCount()-1,2)->setFlags(Qt::ItemFlags(32));
+    }
+}
+
+void manager::on_RefreshProductInWarehouse_clicked()
+{
+    fillTableProducts();
+}
+
+void manager::fillTableCurrency()
+{
+    ui->tableCurrency->setRowCount(0);
+    QSqlQuery qr;
+    qr.exec("SELECT * FROM CurrencyType;");
+    while(qr.next())
+    {
+        ui->CChangeCurrency->addItem(qr.value(2).toString(), qr.value(0).toInt());
+
+        ui->tableCurrency->setRowCount(ui->tableCurrency->rowCount()+1);
+        //QTableWidgetItem *item = new QTableWidgetItem();
+        //item->setText(qr.value(0).toString());
+        //ui->tableCurrency->setItem(ui->tableCurrency->rowCount()-1, 0, item);
+        QTableWidgetItem *item1 = new QTableWidgetItem();
+        item1->setText(qr.value(1).toString());
+        ui->tableCurrency->setItem(ui->tableCurrency->rowCount()-1, 0, item1);
+        QTableWidgetItem *item2 = new QTableWidgetItem();
+        item2->setText(qr.value(2).toString());
+        ui->tableCurrency->setItem(ui->tableCurrency->rowCount()-1, 1, item2);
+        QTableWidgetItem *item3 = new QTableWidgetItem();
+        item3->setText(qr.value(3).toString());
+        ui->tableCurrency->setItem(ui->tableCurrency->rowCount()-1, 2, item3);
+        QTableWidgetItem *item4 = new QTableWidgetItem();
+        item4->setText(qr.value(4).toString());
+        ui->tableCurrency->setItem(ui->tableCurrency->rowCount()-1, 3, item4);
+        ui->tableCurrency->item(ui->tableCurrency->rowCount()-1,0)->setFlags(Qt::ItemFlags(32));
+        ui->tableCurrency->item(ui->tableCurrency->rowCount()-1,1)->setFlags(Qt::ItemFlags(32));
+        ui->tableCurrency->item(ui->tableCurrency->rowCount()-1,2)->setFlags(Qt::ItemFlags(32));
+        ui->tableCurrency->item(ui->tableCurrency->rowCount()-1,3)->setFlags(Qt::ItemFlags(32));
+    }
+}
+
+void manager::on_SetCurrency_clicked()
+{
+    if (ui->dSpinBoxChangeCurrency->value() == 0) return;
+    QSqlQuery qr;
+    qr.prepare("UPDATE CurrencyType SET Сonversion_factor = (?) WHERE ID = (?);");
+    qr.addBindValue(ui->dSpinBoxChangeCurrency->value());
+    qr.addBindValue(ui->CChangeCurrency->currentData().toInt());
+    if(qr.exec())
+    {
+        QMessageBox::information(this,"Information","Update currency was successful");
+        ui->tableCurrency->item(ui->CChangeCurrency->currentData().toInt() - 1, 3)->setText(QString::number(ui->dSpinBoxChangeCurrency->value()));
+        ui->dSpinBoxChangeCurrency->setValue(0);
+    }
+}
+
+void manager::on_addToTheDeliverySchedule_clicked()
+{/*
+    QSqlQuery qr;
+
+    // composition
+    qr.prepare("INSERT INTO composition (ID_product, number) VALUES (?, ?);");
+    qr.addBindValue(ui->CProduct->currentIndex() + 1); // it will be error if I delete anyone product
+    qr.addBindValue(ui->spinBoxNumber->value());
+    qDebug() << ui->CProduct->currentIndex() + 1 << ui->spinBoxNumber->value();
+    if (!qr.exec())
+    {
+        QMessageBox::information(this,"Information","Set product wasn't successful");
+        QSqlQuery q;
+        q.prepare("SELECT number FROM composition WHERE ID_product = (?);");
+        q.addBindValue(ui->CProduct->currentIndex()+1);
+        q.exec();
+        q.next();
+        qr.prepare("UPDATE composition SET number = (?) WHERE ID_product = (?);");
+        qr.addBindValue(q.value(0).toInt());
+        qr.addBindValue(ui->CProduct->currentIndex()+1);
+        if(qr.exec())
+            QMessageBox::information(this,"Information","Update product was successful");
+    }
+
+    // ProductCurrency
+    qr.prepare("INSERT INTO ProductCurrency (ID_product, ID_currency, Price VALUES (?, ?, ?);");
+    qr.addBindValue(ui->CProduct->currentIndex() + 1); // it will be error if I delete anyone product
+    qr.addBindValue(ui->CCurrency->currentIndex() + 1); // it will be error if I delete anyone product
+    qr.addBindValue(ui->dSpinBoxPrice->value());
+    qDebug() << ui->CProduct->currentIndex() + 1 << ui->CCurrency->currentIndex() + 1 << ui->dSpinBoxPrice->value();
+    if (!qr.exec())
+    {
+        QMessageBox::information(this,"Information","Set product wasn't successful");
+    }
+
+    // product_price
+    qr.prepare("INSERT INTO product_price (ID, Purchase_price, Сoefficient) VALUES (?, ?, ?)");
+    qr.addBindValue(ui->CProduct->currentIndex() + 1); // it will be error if I delete anyone product
+    qr.addBindValue(ui->dSpinBoxPrice->value() * ui->LRateValue->text().toDouble()); // it will be error if I delete anyone product
+    qr.addBindValue(2);
+    qDebug() << ui->CProduct->currentIndex() + 1 << ui->dSpinBoxPrice->value() * ui->LRateValue->text().toDouble();
+    if (!qr.exec())
+        QMessageBox::information(this,"Information","Set product wasn't successful");
+    else QMessageBox::information(this,"Information","Set product was successful");
+
+    qr;
+    qr.prepare("INSERT INTO Delivery (ID_product, Number, Date, Status_id VALUES (?, ?, ?, ?);");
+    qr.addBindValue(ui->CProduct->currentIndex() + 1); // it will be error if I delete anyone product
+    qr.addBindValue(ui->CCurrency->currentIndex() + 1); // it will be error if I delete anyone product
+    qr.addBindValue("01.05.2015");
+    qr.addBindValue(1);
+    qDebug() << ui->CProduct->currentIndex() + 1 << ui->CCurrency->currentIndex() + 1 << ui->dSpinBoxPrice->value();
+    if (!qr.exec())
+    {
+        QMessageBox::information(this,"Information","Set product wasn't successful");
+    }*/
 }
