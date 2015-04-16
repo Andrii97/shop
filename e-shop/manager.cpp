@@ -1,7 +1,5 @@
 #include "manager.h"
 #include "ui_manager.h"
-#include <QTableWidgetItem>
-#include <QModelIndex>
 
 manager::manager(QWidget *parent) :
     QWidget(parent),
@@ -31,6 +29,7 @@ manager::manager(QWidget *parent) :
     {
         properties = qr.value(0).toString();
         ui->CProperties->addItem(properties);
+        this->properties->setStringList(QStringList() << properties);
         qDebug() << properties;
     }
 
@@ -146,20 +145,19 @@ void manager::on_CProperties_currentIndexChanged(int index)
     }
 }
 
-void manager::on_pushButton_clicked()
+void manager::on_CreateNewProduct_clicked()
 {
     if (ui->TName->text() == NULL)
     {
         qDebug() << "error";
         return;
     }
-
-    QSqlQuery query;
-    query.exec("SELECT Name FROM products;");
+    QSqlQuery qr;
+    qr.exec("SELECT Name FROM products;");
     QString Name;
-    while (query.next())
+    while (qr.next())
     {
-        Name = query.value(0).toString();
+        Name = qr.value(0).toString();
         if (Name == ui->TName->text())
         {
              QMessageBox::warning(this,"Error","This Name already exists");
@@ -167,12 +165,24 @@ void manager::on_pushButton_clicked()
         }
         qDebug() << Name;
     }
-    query.prepare("INSERT INTO products (Name, Photo) "
-                  "VALUES (?, ?)");
-    query.addBindValue(ui->TName->text());
-    query.addBindValue(ui->TPhoto->text());
-    if (query.exec())
+    qr.prepare("INSERT INTO products (Name, Photo, Length, Width, Height) "
+                  "VALUES (?, ?, ?, ?, ?)");
+    qr.addBindValue(ui->TName->text());
+    qr.addBindValue(ui->TPhoto->text());
+    qr.addBindValue(ui->dSpinBoxLength->value());
+    qr.addBindValue(ui->dSpinBoxWidth->value());
+    qr.addBindValue(ui->dSpinBoxHeight->value());
+    if (qr.exec())
+    {
         QMessageBox::information(this,"Information","Add product was successful");
+        ui->dSpinBoxLength->setValue(0);
+        ui->dSpinBoxWidth->setValue(0);
+        ui->dSpinBoxHeight->setValue(0);
+        if (ui->CCategory->currentIndex() != 0)
+        {
+            qDebug() << "<--<>-<>-<>-->";
+        }
+    }
     ui->CName->addItem(ui->TName->text());
     ui->TName->setText("");
 }
@@ -202,12 +212,26 @@ void manager::on_CCurrency_currentIndexChanged(int index)
         }
     }
 }
+
+void manager::insertToCalendarOfAddingProducts()
+{
+    QSqlQuery qr;
+    qr.prepare("INSERT INTO CalendarOfAddingProducts (ID_product, Price, Number, Date) VALUES (?, ?, ?, ?);");
+    qr.addBindValue(ui->CProduct->currentIndex() + 1); // it will be error if I delete anyone product
+    qr.addBindValue(ui->spinBoxNumber->value());
+    qr.addBindValue(ui->spinBoxNumber->value());
+    QDate date;
+    qr.addBindValue(date.currentDate());
+    if(qr.exec())
+        QMessageBox::information(this,"Information","InsertToCalendar was successful");
+}
+
 // Maybe it is error that I took currentIndex
 void manager::on_addProductToWarehouse_clicked()
 {
     if (ui->spinBoxNumber->value() == 0) return;
     QSqlQuery qr;
-
+    insertToCalendarOfAddingProducts();
     // composition
     qr.prepare("INSERT INTO composition (ID_product, number) VALUES (?, ?);");
     qr.addBindValue(ui->CProduct->currentIndex() + 1); // it will be error if I delete anyone product

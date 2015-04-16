@@ -4,6 +4,9 @@
 #include <QWidget>
 #include <QtSql>
 #include <QMessageBox>
+#include <QTableWidgetItem>
+#include <QDate>
+//#include <QModelIndex>
 
 namespace Ui {
 class manager;
@@ -20,13 +23,14 @@ public:
     void selectTable();
     void fillTableProducts();
     void fillTableCurrency();
+    void insertToCalendarOfAddingProducts();
 
 private slots:
     void on_Enter_clicked();
 
     void on_CProperties_currentIndexChanged(int index);
 
-    void on_pushButton_clicked();
+    void on_CreateNewProduct_clicked();
 
     void on_CCurrency_currentIndexChanged(int index);
 
@@ -40,6 +44,7 @@ private slots:
 
 private:
     Ui::manager *ui;
+    QStringListModel *properties = new QStringListModel;
 };
 
 #endif // MANAGER_H

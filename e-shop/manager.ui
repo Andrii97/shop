@@ -29,7 +29,7 @@
     <enum>QTabWidget::Triangular</enum>
    </property>
    <property name="currentIndex">
-    <number>2</number>
+    <number>1</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideNone</enum>
@@ -62,7 +62,7 @@
       </rect>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="add">
       <attribute name="title">
@@ -84,60 +84,11 @@
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:16pt; font-weight:600; font-style:italic;&quot;&gt;Додавання нового товару&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
       </widget>
-      <widget class="QSplitter" name="splitter_7">
+      <widget class="QPushButton" name="CreateNewProduct">
        <property name="geometry">
         <rect>
-         <x>140</x>
-         <y>70</y>
-         <width>221</width>
-         <height>81</height>
-        </rect>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <widget class="QWidget" name="layoutWidget">
-        <layout class="QVBoxLayout" name="verticalLayout">
-         <item>
-          <widget class="QLabel" name="label_3">
-           <property name="text">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Назва&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="label_4">
-           <property name="text">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Фото&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QWidget" name="layoutWidget_2">
-        <layout class="QVBoxLayout" name="verticalLayout_2">
-         <item>
-          <widget class="QLineEdit" name="TName">
-           <property name="styleSheet">
-            <string notr="true">font: 75 italic 12pt &quot;MS Shell Dlg 2&quot;;</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLineEdit" name="TPhoto">
-           <property name="styleSheet">
-            <string notr="true">font: 75 italic 12pt &quot;MS Shell Dlg 2&quot;;</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </widget>
-      <widget class="QPushButton" name="pushButton">
-       <property name="geometry">
-        <rect>
-         <x>220</x>
-         <y>190</y>
+         <x>200</x>
+         <y>230</y>
          <width>75</width>
          <height>23</height>
         </rect>
@@ -145,6 +96,73 @@
        <property name="text">
         <string>Додати</string>
        </property>
+      </widget>
+      <widget class="QSplitter" name="splitter_14">
+       <property name="geometry">
+        <rect>
+         <x>100</x>
+         <y>50</y>
+         <width>301</width>
+         <height>161</height>
+        </rect>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <widget class="QSplitter" name="splitter_7">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <widget class="QLabel" name="label_3">
+         <property name="text">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Назва&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_4">
+         <property name="text">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Фото&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="LLength">
+         <property name="text">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Довжина&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="LWidth">
+         <property name="text">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Ширина&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="LHeight">
+         <property name="text">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Висота&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="LCategory">
+         <property name="text">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Категорія&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+        </widget>
+       </widget>
+       <widget class="QSplitter" name="splitter_13">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <widget class="QLineEdit" name="TName">
+         <property name="styleSheet">
+          <string notr="true">font: 75 italic 12pt &quot;MS Shell Dlg 2&quot;;</string>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="TPhoto">
+         <property name="styleSheet">
+          <string notr="true">font: 75 italic 12pt &quot;MS Shell Dlg 2&quot;;</string>
+         </property>
+        </widget>
+        <widget class="QDoubleSpinBox" name="dSpinBoxLength"/>
+        <widget class="QDoubleSpinBox" name="dSpinBoxWidth"/>
+        <widget class="QDoubleSpinBox" name="dSpinBoxHeight"/>
+        <widget class="QComboBox" name="CCategory"/>
+       </widget>
       </widget>
      </widget>
      <widget class="QWidget" name="set_properties">
@@ -154,8 +172,8 @@
       <widget class="QPushButton" name="Enter">
        <property name="geometry">
         <rect>
-         <x>190</x>
-         <y>180</y>
+         <x>220</x>
+         <y>240</y>
          <width>75</width>
          <height>23</height>
         </rect>
@@ -167,7 +185,7 @@
       <widget class="QSplitter" name="splitter_3">
        <property name="geometry">
         <rect>
-         <x>50</x>
+         <x>70</x>
          <y>10</y>
          <width>351</width>
          <height>41</height>
@@ -206,16 +224,16 @@
       <widget class="QSplitter" name="splitter_6">
        <property name="geometry">
         <rect>
-         <x>90</x>
-         <y>80</y>
-         <width>281</width>
-         <height>51</height>
+         <x>70</x>
+         <y>60</y>
+         <width>202</width>
+         <height>40</height>
         </rect>
        </property>
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
-       <widget class="QSplitter" name="splitter_5">
+       <widget class="QSplitter" name="splitter_4">
         <property name="orientation">
          <enum>Qt::Vertical</enum>
         </property>
@@ -230,7 +248,7 @@
          </property>
         </widget>
        </widget>
-       <widget class="QSplitter" name="splitter_4">
+       <widget class="QSplitter" name="splitter_5">
         <property name="orientation">
          <enum>Qt::Vertical</enum>
         </property>
