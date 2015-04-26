@@ -19,9 +19,6 @@ public:
 
 private slots:
 
-
-    void on_CProperties_currentIndexChanged(int index);
-
     void on_Enter_clicked();
 
 private:

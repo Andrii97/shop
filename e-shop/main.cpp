@@ -2,7 +2,7 @@
 #include <QApplication>
 #include <QtSql>
 #include <QMessageBox>
-
+#include "product_add.h"
 
 int main(int argc, char *argv[])
 {
@@ -19,8 +19,8 @@ int main(int argc, char *argv[])
     w.show();
     //registration m;
     //m.show();
-    //product_add p;
-    //p.show();
+    product_add p;
+    p.show();
     //set_properties s;
     //s.show();
     //manager m;

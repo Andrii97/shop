@@ -24,6 +24,7 @@ public:
     void fillTableProducts();
     void fillTableCurrency();
     void insertToCalendarOfAddingProducts();
+    bool fillSpace(int id, int number);
 
 private slots:
     void on_Enter_clicked();

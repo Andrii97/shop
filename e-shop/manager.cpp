@@ -25,14 +25,17 @@ manager::manager(QWidget *parent) :
 
     qr.exec("SELECT Name FROM properties;");
     QString properties;
+    QStringList list;
     while (qr.next())
     {
         properties = qr.value(0).toString();
-        ui->CProperties->addItem(properties);
-        this->properties->setStringList(QStringList() << properties);
+        //ui->CProperties->addItem(properties);
+        list << properties;
         qDebug() << properties;
     }
-
+    this->properties->setStringList(list);
+    qDebug() << this->properties->stringList();
+    ui->CProperties->setModel(this->properties);
     // look information about manager
     qr.exec("SELECT Surname, Name, Patronymic, Login, Job_title FROM administrators;");
     while(qr.next())
@@ -226,10 +229,40 @@ void manager::insertToCalendarOfAddingProducts()
         QMessageBox::information(this,"Information","InsertToCalendar was successful");
 }
 
+bool manager::fillSpace(int id, int number)
+{
+    QSqlQuery qr, query;
+    if(!qr.exec(QString("SELECT Length, Width, Height FROM products WHERE ID=%1;").arg(id)))
+        return 0;
+    if(!query.exec("SELECT Сapacity, Occupied FROM warehouses;"))
+        qDebug() << "I here2";
+       // return 0;
+    query.next();
+    double space = (query.value(0).toDouble() - query.value(1).toDouble()) * 0.75;
+    qr.next();
+    double V = (double)number * qr.value(0).toDouble() * qr.value(1).toDouble() * qr.value(2).toDouble();
+    qDebug() << "I here1" << V;
+    if(V > space)
+        return 0;
+    else
+    {
+        qr.prepare("UPDATE warehouses SET Occupied = (?) WHERE ID = (?);"); // for 1 warehouses
+        qr.addBindValue(V + query.value(1).toDouble());
+        qr.addBindValue(1);
+        qDebug() << "I here";
+        if(qr.exec())
+            return 1;
+    }
+     qDebug() << qr.value(1).toString();
+    return 0;
+}
+
 // Maybe it is error that I took currentIndex
 void manager::on_addProductToWarehouse_clicked()
 {
     if (ui->spinBoxNumber->value() == 0) return;
+    if (!fillSpace(ui->CProduct->currentIndex() + 1, ui->spinBoxNumber->value())) return;
+    //return;
     QSqlQuery qr;
     insertToCalendarOfAddingProducts();
     // composition
@@ -262,7 +295,15 @@ void manager::on_addProductToWarehouse_clicked()
     {
         QMessageBox::information(this,"Information","Set product wasn't successful");
     }
-
+    QSqlQuery query;
+    query.exec("SELECT Value account");
+    query.next();
+    double sum = query.value(0).toDouble();
+    qDebug() << sum;
+    query.prepare("UPDATE account SET Value = (?) WHERE ID=(?);"); // for 1 warehouses
+    query.addBindValue(sum - ui->dSpinBoxPrice->value() * ui->LRateValue->text().toDouble());
+    query.addBindValue(1);
+    query.exec();
     // product_price
     qr.prepare("INSERT INTO product_price (ID, Purchase_price, Сoefficient) VALUES (?, ?, ?)");
     qr.addBindValue(ui->CProduct->currentIndex() + 1); // it will be error if I delete anyone product
@@ -347,19 +388,27 @@ void manager::on_SetCurrency_clicked()
     qr.addBindValue(ui->CChangeCurrency->currentData().toInt());
     if(qr.exec())
     {
-        QMessageBox::information(this,"Information","Update currency was successful");
-        ui->tableCurrency->item(ui->CChangeCurrency->currentData().toInt() - 1, 3)->setText(QString::number(ui->dSpinBoxChangeCurrency->value()));
-        ui->dSpinBoxChangeCurrency->setValue(0);
+        qr.prepare("INSERT INTO ChangeCurrency (ID_currency, New, Date) VALUES (?,?,?);");
+        qr.addBindValue(ui->CChangeCurrency->currentData().toInt());
+        qr.addBindValue(ui->dSpinBoxChangeCurrency->value());
+        QDate date;
+        qr.addBindValue(date.currentDate());
+        if(qr.exec())
+        {
+            QMessageBox::information(this,"Information","Update currency was successful");
+            ui->tableCurrency->item(ui->CChangeCurrency->currentData().toInt() - 1, 3)->setText(QString::number(ui->dSpinBoxChangeCurrency->value()));
+            ui->dSpinBoxChangeCurrency->setValue(0);
+        }
     }
 }
 
 void manager::on_addToTheDeliverySchedule_clicked()
-{/*
+{
     QSqlQuery qr;
 
     // composition
     qr.prepare("INSERT INTO composition (ID_product, number) VALUES (?, ?);");
-    qr.addBindValue(ui->CProduct->currentIndex() + 1); // it will be error if I delete anyone product
+    qr.addBindValue(ui->CProduct->currentIndex() + 1);
     qr.addBindValue(ui->spinBoxNumber->value());
     qDebug() << ui->CProduct->currentIndex() + 1 << ui->spinBoxNumber->value();
     if (!qr.exec())
@@ -408,5 +457,5 @@ void manager::on_addToTheDeliverySchedule_clicked()
     if (!qr.exec())
     {
         QMessageBox::information(this,"Information","Set product wasn't successful");
-    }*/
+    }
 }
