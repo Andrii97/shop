@@ -5,11 +5,25 @@
 #include <QDate>
 #include <QTreeWidgetItem>
 
-buyers::buyers(QWidget *parent) :
+buyers::buyers(int ID, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::buyers)
 {
     ui->setupUi(this);
+
+    aBuyerInfo = new BuyerInfo;
+    aBuyerInfo->ID = ID;
+    QSqlQuery qr;
+    qr.exec(QString("SELECT Surname, Name, Patronymic, Login, "
+                    "The_cost_of_all_purchases FROM buyers WHERE ID=%1;").arg(aBuyerInfo->ID));
+    qr.next();
+    aBuyerInfo->Surname = &qr.value(0).toString();
+    aBuyerInfo->Name = &qr.value(1).toString();
+    aBuyerInfo->Patronymic = &qr.value(2).toString();
+    aBuyerInfo->Login = &qr.value(3).toString();
+    aBuyerInfo->The_cost_of_all_purchases = qr.value(4).toDouble();
+    ui->LName->setText(*aBuyerInfo->Surname + " " + *aBuyerInfo->Name + " " + *aBuyerInfo->Patronymic);
+
     QTime rawtime;
     QDate d;
     ui->dateTimeEdit->setTime(rawtime.currentTime());
@@ -24,5 +38,6 @@ buyers::buyers(QWidget *parent) :
 
 buyers::~buyers()
 {
+    delete aBuyerInfo;
     delete ui;
 }

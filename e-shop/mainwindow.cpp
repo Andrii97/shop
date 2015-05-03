@@ -28,7 +28,7 @@ void MainWindow::on_Enter_clicked()
     QSqlQuery qr;
     QString str = ui->comboBox->currentText();
     if (str == "Покупець")
-        qr.exec("SELECT Login, Password FROM buyers;");
+        qr.exec("SELECT Login, Password, ID FROM buyers;");
     else  qr.exec("SELECT Login, Password FROM administrators;");
     QString login, password;
     bool flag = 0;
@@ -48,7 +48,7 @@ void MainWindow::on_Enter_clicked()
              }
              else
              {
-                 buyers *s = new buyers;
+                 buyers *s = new buyers(qr.value(2).toInt());
                  s->show();
              }
              close();
