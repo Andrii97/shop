@@ -61,6 +61,7 @@ manager::manager(QWidget *parent) :
 
 manager::~manager()
 {
+    delete properties;
     delete ui;
 }
 
@@ -249,9 +250,10 @@ bool manager::fillSpace(int id, int number)
         qr.prepare("UPDATE warehouses SET Occupied = (?) WHERE ID = (?);"); // for 1 warehouses
         qr.addBindValue(V + query.value(1).toDouble());
         qr.addBindValue(1);
-        qDebug() << "I here";
+        qDebug() << "I here-----------------)))))))))))))))))))))" << query.value(1);
         if(qr.exec())
             return 1;
+        qDebug() << "FALSE";
     }
      qDebug() << qr.value(1).toString();
     return 0;
@@ -296,9 +298,11 @@ void manager::on_addProductToWarehouse_clicked()
         QMessageBox::information(this,"Information","Set product wasn't successful");
     }
     QSqlQuery query;
-    query.exec("SELECT Value account");
+    query.exec("SELECT Value FROM account");
     query.next();
+    qDebug() << "-----------=======================}}}}}}}||||||||||||{{{{{{{{{" << query.value((0)).toDouble();
     double sum = query.value(0).toDouble();
+    qDebug() << "sum=" << sum;
     qDebug() << sum;
     query.prepare("UPDATE account SET Value = (?) WHERE ID=(?);"); // for 1 warehouses
     query.addBindValue(sum - ui->dSpinBoxPrice->value() * ui->LRateValue->text().toDouble());
