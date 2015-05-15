@@ -37,9 +37,13 @@ public:
     explicit buyers(int ID, QWidget *parent = 0);
     ~buyers();
 
+private slots:
+    void on_ButtonSearchProducts_clicked();
+
 private:
     Ui::buyers *ui;
     BuyerInfo *aBuyerInfo;
+    QStringList *aListCategory;
 };
 
 #endif // BUYERS_H

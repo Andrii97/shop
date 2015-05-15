@@ -6,7 +6,6 @@
 #include <QMessageBox>
 #include <QTableWidgetItem>
 #include <QDate>
-//#include <QModelIndex>
 
 namespace Ui {
 class manager;

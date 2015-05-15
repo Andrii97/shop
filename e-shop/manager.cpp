@@ -14,7 +14,6 @@ manager::manager(QWidget *parent) :
     // add properties
     qr.exec("SELECT Name FROM products;");
     QString Name;
-    ui->CProperties->addItem("Додати характеристику");
     while (qr.next())
     {
         Name = qr.value(0).toString();
@@ -26,6 +25,7 @@ manager::manager(QWidget *parent) :
     qr.exec("SELECT Name FROM properties;");
     QString properties;
     QStringList list;
+    list << "Додати характеристику";
     while (qr.next())
     {
         properties = qr.value(0).toString();
@@ -222,7 +222,7 @@ void manager::insertToCalendarOfAddingProducts()
     QSqlQuery qr;
     qr.prepare("INSERT INTO CalendarOfAddingProducts (ID_product, Price, Number, Date) VALUES (?, ?, ?, ?);");
     qr.addBindValue(ui->CProduct->currentIndex() + 1); // it will be error if I delete anyone product
-    qr.addBindValue(ui->spinBoxNumber->value());
+    qr.addBindValue(ui->dSpinBoxPrice->value());
     qr.addBindValue(ui->spinBoxNumber->value());
     QDate date;
     qr.addBindValue(date.currentDate());
@@ -288,7 +288,7 @@ void manager::on_addProductToWarehouse_clicked()
     }
 
     // ProductCurrency
-    qr.prepare("INSERT INTO ProductCurrency (ID_product, ID_currency, Price VALUES (?, ?, ?);");
+    qr.prepare("INSERT INTO ProductCurrency (ID_product, ID_currency, Price) VALUES (?, ?, ?);");
     qr.addBindValue(ui->CProduct->currentIndex() + 1); // it will be error if I delete anyone product
     qr.addBindValue(ui->CCurrency->currentIndex() + 1); // it will be error if I delete anyone product
     qr.addBindValue(ui->dSpinBoxPrice->value());
