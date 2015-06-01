@@ -1,3 +1,6 @@
+
+
+
 #ifndef BUYERS_H
 #define BUYERS_H
 
@@ -39,6 +42,14 @@ public:
 
 private slots:
     void on_ButtonSearchProducts_clicked();
+
+    void on_next_clicked();
+
+    void on_prev_clicked();
+
+    void on_aBasket_linkActivated(const QString &link);
+
+    void on_printReceipt_clicked();
 
 private:
     Ui::buyers *ui;

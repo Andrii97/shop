@@ -5,7 +5,9 @@
 #-------------------------------------------------
 
 QT       += core gui
-QT       +=sql
+QT       +=sql\
+           printsupport
+
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = e-shop
